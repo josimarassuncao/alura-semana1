@@ -10,6 +10,6 @@
   "starts environment"
   (cc.db/init-data))
 
-(defn -main []
+(defn -main [& args]
   (println "starting service...")
   (start))

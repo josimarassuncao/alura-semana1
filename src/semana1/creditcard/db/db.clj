@@ -7,6 +7,7 @@
                    {:number 1637, :cvv 10, :expires_at "2029-03", :limit 520}
                    {:number 1774, :cvv 91, :expires_at "2021-10", :limit 140}
                    {:number 1904, :cvv 26, :expires_at "2022-01", :limit 1650}
+                   {:number 3104, :cvv 26, :expires_at "2022-01", :limit 1650}
                    ])
 
 (defn get-all-cards []
