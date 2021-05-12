@@ -15,6 +15,13 @@
   "returns the whole list of customers"
   list-of-customers)
 
+(defn get-customer-info
+  "retrieves customer info using id"
+  [id]
+  (->> list-of-customers
+       (filter #(= (:customer-id %) id))
+       first))
+
 (defn init-data []
   "starts the data to test the movements"
   (def list-of-customers default-list))
