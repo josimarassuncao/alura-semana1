@@ -174,8 +174,8 @@
      :customer-id (:customer-id list-data)
      :name (:name list-data)
      :expense month-data
-     })
-  )
+     }
+    ))
 
 (defn get-month-value-for-customer
   [cust-id month]
@@ -191,7 +191,43 @@
 (println (get-month-value-for-customer 411 "2021-04"))
 
 ;; Search for orders by establishment and by amount of the order
+(defn orders-between-prop
+  [prop val-from val-to]
+  (->> full-list
+       (map :orders)
+       (flatten)
+       ;(filter (comp #(>= (compare (:bought_at %) val-from) 0) #(<= (compare (:bought_at %) val-to) 0)))
+       (filter #(>= (compare (prop %) val-from) 0))
+       (filter #(<= (compare (prop %) val-to) 0))
+       (sort-by prop)
+       ;(map prop)
+      ))
 
+(defn orders-between-date
+  [date-from date-to]
+  (orders-between-prop :bought_at date-from date-to)
+  )
+(def may-1-to-11 (orders-between-date "2021-05-01" "2021-05-11"))
+
+(println "\nReporting orders between May 1st and 11th")
+(println may-1-to-11)
+
+(println "\nReporting orders with total value between 100 and 900")
+(defn orders-between-values
+  [amount-from amount-to]
+  (orders-between-prop :total-price amount-from amount-to)
+  )
+
+(def order-100-to-900 (orders-between-values 100 900))
+(println order-100-to-900)
+
+(println "\nReporting orders from Mercado D'Avó")
+(defn establishment-orders
+  [merchant-name]
+  (orders-between-prop :establishment merchant-name merchant-name)
+  )
+(def davo-orders (establishment-orders "Mercado D'Avó"))
+(println davo-orders)
 
 (defn -main [& args]
   (println "starting service...")

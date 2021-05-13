@@ -22,7 +22,7 @@
                     },
                    {
                     :customer-id 234, :order-id 123425,
-                    :bought_at "2021-05-12", :total-price 12.98,
+                    :bought_at "2021-05-11", :total-price 12.98,
                     :establishment "Extra", :category "Market",
                     :payment {:by "CC" :ref 3104 }
                     },
