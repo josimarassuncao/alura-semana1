@@ -156,7 +156,7 @@
 
 (def spent-per-month (amount-spent-per-month-per-customer))
 (println "\nTotal spent per month per customer")
-(println spent-per-month)
+;(println spent-per-month)
 
 (defn get-customer-month-expense
   [cust-id] (
@@ -164,15 +164,28 @@
            (filter #(= (:customer-id %) cust-id))
      ))
 
-(println (get-customer-month-expense 301))
-(println (get-customer-month-expense 235))
+;(println (get-customer-month-expense 301))
+;(println (get-customer-month-expense 235))
+
+(defn resume-month-customer
+  [list-data]
+  (fn [month-data]
+    {
+     :customer-id (:customer-id list-data)
+     :name (:name list-data)
+     :expense month-data
+     })
+  )
 
 (defn get-month-value-for-customer
   [cust-id month]
-  (->> (get-customer-month-expense cust-id)
-       (:months)
-       (filter #(= (:month %) month))
-       ))
+  ( let [monthly-list (first (get-customer-month-expense cust-id))]
+   (->> monthly-list
+        (:months)
+        (filter #(= (:month %) month))
+        (first)
+        ((resume-month-customer monthly-list))
+        )))
 
 ;(println (get-customer-month-expense 411))
 (println (get-month-value-for-customer 411 "2021-04"))
