@@ -1,4 +1,4 @@
-(ns semana1.logic
+(ns semana1.reports.logic
   (:require [semana1.creditcard.db.db :as cc.db]
             [semana1.customer.db.db :as cust.db]
             [semana1.orders.db.db :as o.db]))
