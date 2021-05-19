@@ -22,6 +22,7 @@
        (filter #(= (:customer-id %) id))
        first))
 
-(defn init-data []
+(defn init-data!
   "starts the data to test the movements"
+  [conn]
   (def list-of-customers default-list))

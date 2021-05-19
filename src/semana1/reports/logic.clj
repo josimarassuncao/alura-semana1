@@ -3,13 +3,6 @@
             [semana1.customer.db.db :as cust.db]
             [semana1.orders.db.db :as o.db]))
 
-(defn start-dbs! []
-  "starts environment"
-  (cc.db/init-data)
-  (cust.db/init-data)
-  (o.db/init-data)
-  (println "dbs started"))
-
 ;; Merging all data in a unified list
 (defn append-card-info
   [order]
@@ -75,14 +68,10 @@
 
 (defn resume-monthly-customer-expense
   [[month orders]]
-  ;((println month "-" orders))
   (->> orders
-       ;(flatten)
        (map #(:total-price % 0))
        (flatten)
-       ;(#(println month "-" (class %) "-" %))
        (reduce +)
-       ;(println)
        ((only-month-total month))
        ))
 
@@ -140,11 +129,9 @@
   (->> full-list
        (map :orders)
        (flatten)
-       ;(filter (comp #(>= (compare (:bought_at %) val-from) 0) #(<= (compare (:bought_at %) val-to) 0)))
        (filter #(>= (compare (prop %) val-from) 0))
        (filter #(<= (compare (prop %) val-to) 0))
        (sort-by prop)
-       ;(map prop)
        ))
 
 (defn orders-between-date

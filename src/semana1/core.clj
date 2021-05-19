@@ -1,9 +1,12 @@
 (ns semana1.core
-  (:require [semana1.reports.logic :as r]))
+  (:require [semana1.config.db :as config.db]
+            [semana1.reports.logic :as r])
+  (:use clojure.pprint))
 
 (defn -main [& args]
   (println "starting service...")
-  (r/start-dbs!))
+  (let [db-conn (config.db/start-db-and-connection!)]
+    (config.db/start-dbs! db-conn)))
 
 (-main)
 

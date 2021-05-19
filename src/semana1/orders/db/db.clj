@@ -55,6 +55,7 @@
   (->> list-of-orders
        (filter (filter-by-customer-id customer-id))))
 
-(defn init-data []
+(defn init-data!
   "starts the data to test the movements"
+  [conn]
   (def list-of-orders default-list))

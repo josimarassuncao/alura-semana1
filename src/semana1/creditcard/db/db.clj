@@ -21,6 +21,7 @@
        (filter #(= (:number %) card-id))
        (first)))
 
-(defn init-data []
+(defn init-data!
   "starts the data to test the movements"
+  [db]
   (def list-of-cards default-list))
