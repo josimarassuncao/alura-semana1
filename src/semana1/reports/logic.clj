@@ -15,7 +15,7 @@
 
 (defn append-orders-info
   [customer]
-  (->> (:customer-id customer)
+  (->> (:customer/id customer)
        (o.db/get-orders-by-customer)
        (map append-card-info)
        (#(assoc customer :orders %1))
@@ -25,12 +25,12 @@
   []
   (->> (cust.db/get-all-customers)
        (map append-orders-info)
-       (sort-by :name)
+       (sort-by :customer/name)
        ))
 
 (defn resume-customer
   [customer]
-  (fn [value] {:customer-id (:customer-id customer) :name (:name customer) :total value})
+  (fn [value] {:customer/id (:customer/id customer) :customer/name (:customer/name customer) :total value})
   )
 
 (defn total-per-customer
@@ -79,8 +79,8 @@
   [customer]
   (fn [months-data]
     {
-     :customer-id (:customer-id customer)
-     :name        (:name customer)
+     :customer/id (:customer/id customer)
+     :customer/name        (:customer/name customer)
      :months      months-data
      }))
 
@@ -92,6 +92,16 @@
        ((resume-customer-months customer))
        ))
 
+(defn report-grouped-by-category
+  [full-list]
+  (->> full-list
+       (map :orders)
+       (flatten)
+       (#(group-by :category %))
+       (map sum-categories)
+       (sort-by :category)
+       ))
+
 (defn amount-spent-per-month-per-customer
   [full-list]
   (->> full-list
@@ -100,15 +110,15 @@
 
 (defn get-customer-month-expense
   [spent-per-month cust-id] (->> spent-per-month
-                                 (filter #(= (:customer-id %) cust-id))
+                                 (filter #(= (:customer/id %) cust-id))
                                  ))
 
 (defn resume-month-customer
   [list-data]
   (fn [month-data]
     {
-     :customer-id (:customer-id list-data)
-     :name        (:name list-data)
+     :customer/id (:customer/id list-data)
+     :customer/name        (:customer/name list-data)
      :expense     month-data
      }
     ))

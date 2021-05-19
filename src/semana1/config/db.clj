@@ -23,9 +23,9 @@
   (get-connection))
 
 (defn start-dbs!
-  "starts environment"
+  "starts the elements of the service that require db connection"
   [conn]
-  (cc.db/init-data! conn)
-  (cust.db/init-data! conn)
-  (o.db/init-data! conn)
-  (println "dbs started"))
+  (cc.db/init-entity! conn)
+  (cust.db/init-entity! conn)
+  (o.db/init-entity! conn)
+  (println "entities started"))

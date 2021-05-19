@@ -21,7 +21,8 @@
        (filter #(= (:number %) card-id))
        (first)))
 
-(defn init-data!
+
+(defn init-entity!
   "starts the data to test the movements"
   [db]
   (def list-of-cards default-list))
