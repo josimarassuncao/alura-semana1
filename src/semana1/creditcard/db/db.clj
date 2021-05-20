@@ -2,7 +2,6 @@
   (:require [datomic.api :as d]))
 
 (def conn nil)
-(def list-of-cards [])
 
 (def schema [{:db/ident       :credit-card/id
               :db/valueType   :db.type/uuid
@@ -40,7 +39,7 @@
 ;; 1904 326 2022-01 - [5207 5199 3492 1569] 352 2023-02-20
 ;; 3104 536 2022-01 - [5196 7300 0367 7635] 181 2021-12-20
 
-(def default-list [
+(def default-data [
                    {:credit-card/id #uuid"cd335e7b-9d79-4ffb-84e3-05cd8514ba20", :credit-card/number [5148 7572 5686 922], :credit-card/cvv 200, :credit-card/expires-at "2023-04-20", :credit-card/declared-limit 50M}
                    {:credit-card/id #uuid"4cbadf39-e1f9-4922-95a0-759743d93604", :credit-card/number [5427 1395 4814 2967], :credit-card/cvv 888, :credit-card/expires-at "2022-12-20", :credit-card/declared-limit 520M}
                    {:credit-card/id #uuid"3bf97e13-8cb9-46a2-8070-5f0e777ded81", :credit-card/number [5279 883 6158 8328], :credit-card/cvv 718, :credit-card/expires-at "2022-01-20", :credit-card/declared-limit 140M}
@@ -67,7 +66,7 @@
 (defn init-entity!
   "starts the data to test the movements"
   [db-conn]
+  ; TODO: This is something to think about, how to share a certain important component with other parts of the application?
   (def conn db-conn)
   @(d/transact conn schema)
-  @(d/transact conn default-list)
-  (def list-of-cards default-list))
+  @(d/transact conn default-data))

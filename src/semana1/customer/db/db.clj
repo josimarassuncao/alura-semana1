@@ -44,7 +44,7 @@
   "returns the whole list of customers"
   []
   (->> (d/q '[:find (pull ?entity [*])
-          :where [?entity :customer/id]] (d/db conn))
+              :where [?entity :customer/id]] (d/db conn))
        (map first)))
 
 (defn get-customer-info
@@ -59,8 +59,7 @@
 (defn init-entity!
   "starts the data to test the movements"
   [db-conn]
+  ; TODO: This is something to think about, how to share a certain important component with other parts of the application?
   (def conn db-conn)
   @(d/transact conn schema)
   @(d/transact conn default-data))
-
-

@@ -4,6 +4,18 @@
             [semana1.customer.db.db :as cust.db]
             [semana1.orders.db.db :as o.db]))
 
+(def conn nil)
+
+(defn get-connection
+  "Returns a connection created to handle db operations"
+  []
+  conn)
+
+(defn clear-connection!
+  "Removes the current connection with the database"
+  []
+  (alter-var-root #'conn (constantly nil)))
+
 (defn start-db-and-connection!
   "Ensure database is on and gets a connection to it"
   []
@@ -14,17 +26,18 @@
       "Creates the database is created"
       []
       (d/create-database db-uri))
-    (defn get-connection
+    (defn create-connection!
       "Gets a connection to handle db operations"
       []
-      (d/connect db-uri))
+      (alter-var-root #'conn (constantly (d/connect db-uri))))
     )
   (ensure-db-created!)
+  (create-connection!)
   (get-connection))
 
 (defn start-dbs!
   "starts the elements of the service that require db connection"
-  [conn]
+  []
   (cc.db/init-entity! conn)
   (cust.db/init-entity! conn)
   (o.db/init-entity! conn)

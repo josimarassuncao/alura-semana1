@@ -6,8 +6,8 @@
 
 (defn -main [& args]
   (println "starting service...")
-  (let [db-conn (config.db/start-db-and-connection!)]
-    (config.db/start-dbs! db-conn)))
+  (config.db/start-db-and-connection!)
+  (config.db/start-dbs!))
 
 (-main)
 
