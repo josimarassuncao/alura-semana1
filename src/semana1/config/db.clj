@@ -29,3 +29,11 @@
   (cust.db/init-entity! conn)
   (o.db/init-entity! conn)
   (println "entities started"))
+
+(defn drop-database!
+  "Resets the data doing the deletion of the database"
+  []
+  ; This is a secret and should not be as plain text here
+  ; TODO: Add environment variable reader
+  (let [db-uri "datomic:dev://localhost:4334/semana1"]
+  (d/delete-database db-uri)))
