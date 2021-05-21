@@ -88,11 +88,15 @@
 (println "\nReporting customers with highest order value")
 (def highest-priced (r/customers-highest-purchase-value))
 (println highest-priced)
+;; Reporting customers with highest order value
+;; {:high-value 1515.00M, :customers (#:customer{:name Maria, :email maria@email.com} #:customer{:name Marta, :email marta@email.com})}
 
 ;; Customers that made the purchase with lowest value
 (println "\nReporting customers with highest order value")
 (def lowest-priced (r/customers-lowest-purchase-value))
 (println lowest-priced)
+;; Reporting customers with highest order value
+;; {:low-value 12.98M, :customers (#:customer{:name Hellen, :email hellen@email.com})}
 
 ;; Customers that made no purchase at all
 
