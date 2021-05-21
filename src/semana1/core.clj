@@ -81,13 +81,18 @@
 ;;Reporting orders from Mercado D'Avó
 ;;({:customer/id 235, :order-id 544321, :bought_at 2021-05-01, :total-price 123.0, :establishment Mercado D'Avó, :category Market, :payment {:by CC, :ref 1774, :details {:number 1774, :cvv 91, :expires_at 2021-10, :limit 140}}} {:customer/id 411, :order-id 765920, :bought_at 2021-05-12, :total-price 59.99, :establishment Mercado D'Avó, :category Market, :payment {:by CC, :ref 1534, :details {:number 1534, :cvv 12, :expires_at 2026-02, :limit 50}}})
 
+;; Customers who purchased more times
+
+
 ;; Customers that made the purchase with highest value
 (println "\nReporting customers with highest order value")
-(def high-priced-customers-order (r/customers-highest-purchase-value))
-(println high-priced-customers-order)
+(def highest-priced (r/customers-highest-purchase-value))
+(println highest-priced)
 
 ;; Customers that made the purchase with lowest value
-
+(println "\nReporting customers with highest order value")
+(def lowest-priced (r/customers-lowest-purchase-value))
+(println lowest-priced)
 
 ;; Customers that made no purchase at all
 

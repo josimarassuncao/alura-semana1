@@ -160,14 +160,20 @@
   (orders-between-prop full-list :order/establishment merchant-name merchant-name)
   )
 
-(defn format-high-value
+(defn format-value-list
   "organises high priced orders with list of customer"
-  [query-result]
-  {:high-value (:high-value (first query-result))
+  [prop query-result]
+  {prop (prop (first query-result))
     :customers (map :customer query-result)})
 
 (defn customers-highest-purchase-value
   "retrieves the customers who shared the highest value for an order"
   []
   (->> (o.db/get-highest-priced-orders)
-       (format-high-value)))
+       (format-value-list :high-value)))
+
+(defn customers-lowest-purchase-value
+  "retrieves the customers who shared the lowest value for an order"
+  []
+  (->> (o.db/get-lowest-priced-orders)
+       (format-value-list :low-value)))

@@ -152,3 +152,16 @@
          [?order :order/customer ?customer]]
        (d/db conn))
   )
+
+(defn get-lowest-priced-orders
+  "retrieves the orders most priced"
+  []
+  (d/q '[:find ?low-priced, (pull ?customer [:customer/name :customer/email])
+         :keys :low-value, :customer
+         :where [(q '[:find (min ?low-priced)
+                      :where [_ :order/total-price ?low-priced]
+                      ] $)  [[ ?low-priced ]]]
+         [?order :order/total-price ?low-priced]
+         [?order :order/customer ?customer]]
+       (d/db conn))
+  )
