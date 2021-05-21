@@ -166,6 +166,13 @@
   {prop (prop (first query-result))
     :customers (map :customer query-result)})
 
+(defn customers-most-purchases
+  "retrieves customers who had purchased more"
+  []
+  (->> (o.db/get-customer-with-most-orders)
+       (conj [])
+       (format-value-list :quantity)))
+
 (defn customers-highest-purchase-value
   "retrieves the customers who shared the highest value for an order"
   []

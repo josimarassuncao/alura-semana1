@@ -140,6 +140,16 @@
             (d/db conn) customer-id)
        (map first)))
 
+(defn get-customer-with-most-orders
+  "retrieves the customer with the most number of orders"
+  []
+  (->> (d/q '[:find (pull ?customer [:customer/name :customer/id] :as customer), (count ?order)
+          :keys customer, quantity
+          :where [?order :order/customer ?customer]
+          ] (d/db conn))
+       (sort-by :quantity)
+       (last)))
+
 (defn get-highest-priced-orders
   "retrieves the orders most priced"
   []

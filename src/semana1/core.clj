@@ -82,7 +82,11 @@
 ;;({:customer/id 235, :order-id 544321, :bought_at 2021-05-01, :total-price 123.0, :establishment Mercado D'Avó, :category Market, :payment {:by CC, :ref 1774, :details {:number 1774, :cvv 91, :expires_at 2021-10, :limit 140}}} {:customer/id 411, :order-id 765920, :bought_at 2021-05-12, :total-price 59.99, :establishment Mercado D'Avó, :category Market, :payment {:by CC, :ref 1534, :details {:number 1534, :cvv 12, :expires_at 2026-02, :limit 50}}})
 
 ;; Customers who purchased more times
-
+(println "\nReporting customers who bought more times")
+(def most-purchases (r/customers-most-purchases))
+(println most-purchases)
+;; Reporting customers who bought more times
+;; {:quantity 3, :customers (#:customer{:name Maria, :id #uuid "63c03785-9b0f-46b8-be86-8a072a99439f"})}
 
 ;; Customers that made the purchase with highest value
 (println "\nReporting customers with highest order value")
