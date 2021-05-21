@@ -43,7 +43,7 @@
 (defn get-all-customers
   "returns the whole list of customers"
   []
-  (->> (d/q '[:find (pull ?entity [*])
+  (->> (d/q '[:find (pull ?entity [*, {:order/customer [:order/id]} :as :orders ])
               :where [?entity :customer/id]] (d/db conn))
        (map first)))
 

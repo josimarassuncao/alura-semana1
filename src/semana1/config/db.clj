@@ -38,8 +38,8 @@
 (defn start-dbs!
   "starts the elements of the service that require db connection"
   []
-  (cc.db/init-entity! conn)
   (cust.db/init-entity! conn)
+  (cc.db/init-entity! conn)
   (o.db/init-entity! conn)
   (println "entities started"))
 

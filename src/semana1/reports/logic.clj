@@ -7,10 +7,10 @@
 (defn append-card-info
   [order]
   (->> order
-       (get-in order [:payment])
-       (#(cc.db/get-card-info (:ref %)))
-       (#(assoc (:payment order) :details %))
-       (#(assoc order :payment %))
+       (:order/payment-ref)
+       (:credit-card/id)
+       (cc.db/get-card-info)
+       (assoc order :payment-details)
        ))
 
 (defn append-orders-info
@@ -18,7 +18,7 @@
   (->> (:customer/id customer)
        (o.db/get-orders-by-customer)
        (map append-card-info)
-       (#(assoc customer :orders %1))
+       (#(assoc customer :orders %))
        ))
 
 (defn merge-all-data
@@ -36,7 +36,7 @@
 (defn total-per-customer
   [customer]
   (->> (:orders customer [])
-       (map #(:total-price % 0))
+       (map #(:order/total-price % 0))
        (reduce +)
        ;(println)
        ((resume-customer customer))
@@ -44,13 +44,13 @@
 
 (defn resume-category
   [category]
-  (fn [value] {:category category :total value})
+  (fn [value] {:order/category category :total value})
   )
 
 (defn sum-categories
   [[key list]]
   (->> list
-       (map :total-price)
+       (map :order/total-price)
        (reduce +)
        ((resume-category key))
        ))
@@ -58,7 +58,7 @@
 ;; Amount spent in a month Y by customer X
 (defn get-month-from-order
   [order-info]
-  (subs (:bought_at order-info) 0 7))
+  (subs (:order/bought-at order-info) 0 7))
 
 (defn only-month-total
   [month]
@@ -69,7 +69,7 @@
 (defn resume-monthly-customer-expense
   [[month orders]]
   (->> orders
-       (map #(:total-price % 0))
+       (map #(:order/total-price % 0))
        (flatten)
        (reduce +)
        ((only-month-total month))
@@ -97,9 +97,9 @@
   (->> full-list
        (map :orders)
        (flatten)
-       (#(group-by :category %))
+       (#(group-by :order/category %))
        (map sum-categories)
-       (sort-by :category)
+       (sort-by :order/category)
        ))
 
 (defn amount-spent-per-month-per-customer
@@ -146,15 +146,15 @@
 
 (defn orders-between-date
   [full-list date-from date-to]
-  (orders-between-prop full-list :bought_at date-from date-to)
+  (orders-between-prop full-list :order/bought-at date-from date-to)
   )
 
 (defn orders-between-values
   [full-list amount-from amount-to]
-  (orders-between-prop full-list :total-price amount-from amount-to)
+  (orders-between-prop full-list :order/total-price amount-from amount-to)
   )
 
 (defn establishment-orders
   [full-list merchant-name]
-  (orders-between-prop full-list :establishment merchant-name merchant-name)
+  (orders-between-prop full-list :order/establishment merchant-name merchant-name)
   )

@@ -54,7 +54,26 @@
             (d/db conn))
        (map first)))
 
+
+;
+;(defn get-card-info
+;  "returns a card info based on the number"
+;  [card-number]
+;  ;(println "get-card-info >>> " card-number)
+;  (->> (d/pull (d/db conn) '[*] [:db/id card-number])
+;       ;(println "resultado da pesquisa")
+;       (ffirst)))
+
 (defn get-card-info
+  "returns a card info based on the number"
+  [card-id]
+  (->> (d/q '[:find (pull ?creditcard [*])
+              :in $ ?card-to-find
+              :where [?creditcard :credit-card/id ?card-to-find]]
+            (d/db conn) card-id)
+       (ffirst)))
+
+(defn get-card-info-by-number
   "returns a card info based on the number"
   [card-number]
   (->> (d/q '[:find (pull ?creditcard [*])

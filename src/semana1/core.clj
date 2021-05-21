@@ -1,7 +1,6 @@
 (ns semana1.core
   (:require [semana1.config.db :as config.db]
-            [semana1.reports.logic :as r]
-            [semana1.customer.db.db :as cust.db])
+            [semana1.reports.logic :as r])
   (:use clojure.pprint))
 
 (defn -main [& args]
