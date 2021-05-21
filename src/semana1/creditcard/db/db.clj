@@ -46,6 +46,13 @@
                    {:credit-card/id #uuid"8ad8d180-bc82-4115-9859-e7cd03966edd", :credit-card/number [5207 5199 3492 1569], :credit-card/cvv 352, :credit-card/expires-at "2023-02-20", :credit-card/declared-limit 1650M}
                    {:credit-card/id #uuid"4940b83b-9ea1-4e73-ac7e-95b0dd116d50", :credit-card/number [5196 7300 0367 7635], :credit-card/cvv 181, :credit-card/expires-at "2021-12-20", :credit-card/declared-limit 1650M}
                    ])
+(defn init-entity!
+  "starts the data to test the movements"
+  [db-conn]
+  ; TODO: This is something to think about, how to share a certain important component with other parts of the application?
+  (def conn db-conn)
+  @(d/transact conn schema)
+  @(d/transact conn default-data))
 
 (defn get-all-cards []
   "returns the whole list of credit cards"
@@ -82,10 +89,3 @@
             (d/db conn) card-number)
        (ffirst)))
 
-(defn init-entity!
-  "starts the data to test the movements"
-  [db-conn]
-  ; TODO: This is something to think about, how to share a certain important component with other parts of the application?
-  (def conn db-conn)
-  @(d/transact conn schema)
-  @(d/transact conn default-data))

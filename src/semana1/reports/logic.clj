@@ -1,5 +1,6 @@
 (ns semana1.reports.logic
-  (:require [semana1.creditcard.db.db :as cc.db]
+  (:require [datomic.api :as d]
+            [semana1.creditcard.db.db :as cc.db]
             [semana1.customer.db.db :as cust.db]
             [semana1.orders.db.db :as o.db]))
 
@@ -79,9 +80,9 @@
   [customer]
   (fn [months-data]
     {
-     :customer/id (:customer/id customer)
-     :customer/name        (:customer/name customer)
-     :months      months-data
+     :customer/id   (:customer/id customer)
+     :customer/name (:customer/name customer)
+     :months        months-data
      }))
 
 (defn organize-expenses-per-month
@@ -117,9 +118,9 @@
   [list-data]
   (fn [month-data]
     {
-     :customer/id (:customer/id list-data)
-     :customer/name        (:customer/name list-data)
-     :expense     month-data
+     :customer/id   (:customer/id list-data)
+     :customer/name (:customer/name list-data)
+     :expense       month-data
      }
     ))
 
@@ -158,3 +159,15 @@
   [full-list merchant-name]
   (orders-between-prop full-list :order/establishment merchant-name merchant-name)
   )
+
+(defn format-high-value
+  "organises high priced orders with list of customer"
+  [query-result]
+  {:high-value (:high-value (first query-result))
+    :customers (map :customer query-result)})
+
+(defn customers-highest-purchase-value
+  "retrieves the customers who shared the highest value for an order"
+  []
+  (->> (o.db/get-highest-priced-orders)
+       (format-high-value)))

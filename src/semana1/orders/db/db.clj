@@ -50,6 +50,7 @@
 ;; 123425 - #uuid"cdf4cb00-c8de-4259-8a8b-719dbc1606a9"
 ;; 765920 - #uuid"10ecd706-35c0-4c17-9491-80098aae1c8d"
 ;; 135425 - #uuid"8b5baf65-1749-4cf5-8709-6f3810cfd807"
+;; ------ - #uuid"4d652f49-37da-4175-9918-e93d9243096c"
 
 (def default-data [{
                     :order/id            #uuid"df78cdc4-4f61-4965-bece-c6d27ac7e30c",
@@ -98,8 +99,23 @@
                     :order/establishment "Extra", :order/category "Market",
                     :order/payment-by    "CC",
                     :order/payment-ref   [:credit-card/id #uuid"4940b83b-9ea1-4e73-ac7e-95b0dd116d50"]
+                    },
+                   {
+                    :order/id            #uuid"4d652f49-37da-4175-9918-e93d9243096c",
+                    :order/customer      [:customer/id #uuid"63c03785-9b0f-46b8-be86-8a072a99439f"],
+                    :order/bought-at     "2021-04-07", :order/total-price 1515.00M,
+                    :order/establishment "Negreiros", :order/category "Market",
+                    :order/payment-by    "CC",
+                    :order/payment-ref   [:credit-card/id #uuid"4940b83b-9ea1-4e73-ac7e-95b0dd116d50"]
                     }
                    ])
+
+(defn init-entity!
+  "starts the data to test the movements"
+  [db-conn]
+  (alter-var-root #'conn (constantly db-conn))
+  @(d/transact conn schema)
+  @(d/transact conn default-data))
 
 (defn get-all-orders
   "returns the whole list of customers"
@@ -124,9 +140,15 @@
             (d/db conn) customer-id)
        (map first)))
 
-(defn init-entity!
-  "starts the data to test the movements"
-  [db-conn]
-  (alter-var-root #'conn (constantly db-conn))
-  @(d/transact conn schema)
-  @(d/transact conn default-data))
+(defn get-highest-priced-orders
+  "retrieves the orders most priced"
+  []
+  (d/q '[:find ?high-priced, (pull ?customer [:customer/name :customer/email])
+         :keys :high-value, :customer
+         :where [(q '[:find (max ?high-priced)
+                      :where [_ :order/total-price ?high-priced]
+                      ] $)  [[ ?high-priced ]]]
+         [?order :order/total-price ?high-priced]
+         [?order :order/customer ?customer]]
+       (d/db conn))
+  )

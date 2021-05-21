@@ -40,6 +40,14 @@
                    {:customer/id #uuid"d3996403-e4c3-46e9-935f-1d4b47df50ae", :customer/name "Erika", :customer/email "erika@email.com"}
                    ])
 
+(defn init-entity!
+  "starts the data to test the movements"
+  [db-conn]
+  ; TODO: This is something to think about, how to share a certain important component with other parts of the application?
+  (def conn db-conn)
+  @(d/transact conn schema)
+  @(d/transact conn default-data))
+
 (defn get-all-customers
   "returns the whole list of customers"
   []
@@ -55,11 +63,3 @@
               :in $ ?filter-id
               :where [?entity :customer/id ?filter-id]] (d/db conn) id)
        ffirst))
-
-(defn init-entity!
-  "starts the data to test the movements"
-  [db-conn]
-  ; TODO: This is something to think about, how to share a certain important component with other parts of the application?
-  (def conn db-conn)
-  @(d/transact conn schema)
-  @(d/transact conn default-data))
