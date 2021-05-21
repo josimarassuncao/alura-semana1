@@ -80,3 +80,5 @@
 (println davo-orders)
 ;;Reporting orders from Mercado D'Avó
 ;;({:customer/id 235, :order-id 544321, :bought_at 2021-05-01, :total-price 123.0, :establishment Mercado D'Avó, :category Market, :payment {:by CC, :ref 1774, :details {:number 1774, :cvv 91, :expires_at 2021-10, :limit 140}}} {:customer/id 411, :order-id 765920, :bought_at 2021-05-12, :total-price 59.99, :establishment Mercado D'Avó, :category Market, :payment {:by CC, :ref 1534, :details {:number 1534, :cvv 12, :expires_at 2026-02, :limit 50}}})
+
+

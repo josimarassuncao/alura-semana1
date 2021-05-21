@@ -1,8 +1,6 @@
 (ns semana1.orders.db.db
   (:require [datomic.api :as d]))
 
-(def list-of-orders [])
-
 (def conn nil)
 
 (def schema [{:db/ident       :order/id
@@ -53,7 +51,7 @@
 ;; 765920 - #uuid"10ecd706-35c0-4c17-9491-80098aae1c8d"
 ;; 135425 - #uuid"8b5baf65-1749-4cf5-8709-6f3810cfd807"
 
-(def default-list [{
+(def default-data [{
                     :order/id            #uuid"df78cdc4-4f61-4965-bece-c6d27ac7e30c",
                     :order/customer      [:customer/id #uuid"d3996403-e4c3-46e9-935f-1d4b47df50ae"],
                     :order/bought-at     "2021-05-01", :order/total-price 123.00M,
@@ -103,11 +101,8 @@
                     }
                    ])
 
-(defn get-all-orders []
+(defn get-all-orders
   "returns the whole list of customers"
-  list-of-orders)
-
-(defn get-all-orders-by-query
   []
   (->> (d/q '[:find (pull ?order [*])
               :where [?order :order/id]]
@@ -134,5 +129,4 @@
   [db-conn]
   (alter-var-root #'conn (constantly db-conn))
   @(d/transact conn schema)
-  @(d/transact conn default-list)
-  (def list-of-orders default-list))
+  @(d/transact conn default-data))
