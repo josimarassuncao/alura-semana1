@@ -44,14 +44,14 @@
   "starts the data to test the movements"
   [db-conn]
   ; TODO: This is something to think about, how to share a certain important component with other parts of the application?
-  (def conn db-conn)
+  (alter-var-root #'conn (constantly db-conn))
   @(d/transact conn schema)
   @(d/transact conn default-data))
 
 (defn get-all-customers
   "returns the whole list of customers"
   []
-  (->> (d/q '[:find (pull ?entity [*, {:order/customer [:order/id]} :as :orders ])
+  (->> (d/q '[:find (pull ?entity [*, {:order/customer [:order/id]} :as :orders])
               :where [?entity :customer/id]] (d/db conn))
        (map first)))
 
@@ -63,3 +63,12 @@
               :in $ ?filter-id
               :where [?entity :customer/id ?filter-id]] (d/db conn) id)
        ffirst))
+
+(defn get-customer-with-no-order
+  "retrieves customer that has no orders"
+  []
+  (->> (d/q '[:find (pull ?customer  [:customer/name :customer/email])
+              :where [?customer :customer/id]
+              (not [_ :order/customer ?customer])]
+            (d/db conn))
+       (map first)))

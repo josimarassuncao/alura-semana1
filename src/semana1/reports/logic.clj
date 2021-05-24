@@ -184,3 +184,9 @@
   []
   (->> (o.db/get-lowest-priced-orders)
        (format-value-list :low-value)))
+
+(defn customers-with-no-order
+  "retrieves customers who did not made any purchase"
+  []
+  (->> (cust.db/get-customer-with-no-order)
+       ))

@@ -103,4 +103,8 @@
 ;; {:low-value 12.98M, :customers (#:customer{:name Hellen, :email hellen@email.com})}
 
 ;; Customers that made no purchase at all
-
+(println "\nWho did not made a purchase")
+(def no-order-at-all (r/customers-with-no-order))
+(println no-order-at-all)
+;; Who did not made a purchase
+;; (#:customer{:name Angelo, :email angelo@email.com} #:customer{:name Jose, :email jose@email.com})
