@@ -1,4 +1,4 @@
-(ns semana1.core
+(ns store.core
   (:require [semana1.config.db :as config.db]
             [semana1.reports.logic :as r])
   (:use clojure.pprint))

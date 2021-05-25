@@ -1,6 +1,6 @@
-(ns semana1.core-test
+(ns store.core-test
   (:require [clojure.test :refer :all]
-            [semana1.core :refer :all]))
+            [store.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

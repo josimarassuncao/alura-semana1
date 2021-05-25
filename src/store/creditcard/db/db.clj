@@ -1,4 +1,4 @@
-(ns semana1.creditcard.db.db
+(ns store.creditcard.db.db
   (:require [datomic.api :as d]))
 
 (def conn nil)

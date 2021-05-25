@@ -1,4 +1,4 @@
-(ns semana1.reports.logic
+(ns store.reports.logic
   (:require [datomic.api :as d]
             [semana1.creditcard.db.db :as cc.db]
             [semana1.customer.db.db :as cust.db]

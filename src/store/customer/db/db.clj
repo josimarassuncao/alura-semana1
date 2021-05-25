@@ -1,4 +1,4 @@
-(ns semana1.customer.db.db
+(ns store.customer.db.db
   (:require [datomic.api :as d]))
 
 (def conn nil)

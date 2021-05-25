@@ -1,8 +1,8 @@
-(ns semana1.config.db
+(ns store.config.db
   (:require [datomic.api :as d]
-            [semana1.creditcard.db.db :as cc.db]
-            [semana1.customer.db.db :as cust.db]
-            [semana1.orders.db.db :as o.db]))
+            [store.creditcard.db.db :as cc.db]
+            [store.customer.db.db :as cust.db]
+            [store.orders.db.db :as o.db]))
 
 (def conn nil)
 
