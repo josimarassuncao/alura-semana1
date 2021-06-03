@@ -1,12 +1,14 @@
 (ns store.core
   (:require [store.config.db :as config.db]
+            [store.customer.logic :as cust.logic]
             [store.reports.logic :as r])
   (:use clojure.pprint))
 
 (defn -main [& args]
   (println "starting service...")
   (config.db/start-db-and-connection!)
-  (config.db/start-dbs!))
+  (config.db/start-dbs!)
+  (cust.logic/add-default-data!))
 
 (-main)
 
