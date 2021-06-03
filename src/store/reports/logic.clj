@@ -1,8 +1,8 @@
 (ns store.reports.logic
   (:require [datomic.api :as d]
-            [semana1.creditcard.db.db :as cc.db]
-            [semana1.customer.db.db :as cust.db]
-            [semana1.orders.db.db :as o.db]))
+            [store.creditcard.db.db :as cc.db]
+            [store.customer.db.db :as cust.db]
+            [store.orders.db.db :as o.db]))
 
 ;; Merging all data in a unified list
 (defn append-card-info

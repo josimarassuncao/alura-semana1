@@ -19,34 +19,9 @@
               :db/doc         "The email of the customer"}
              ])
 
-(defn uuid
-  []
-  (java.util.UUID/randomUUID))
-
-;; previous customer-id - new customer/id
-;; 301 - 902d739c-1226-4485-a109-2678c6c7a58f
-;; 411 - 63c03785-9b0f-46b8-be86-8a072a99439f
-;; 831 - 3659e5b1-34ac-498a-a899-6eef06d441f7
-;; 200 - f8ed5740-99d3-4e6b-a71e-aa2b9158bcd9
-;; 234 - e42dca1e-69db-45bb-88d5-5225a49ebed0
-;; 235 - d3996403-e4c3-46e9-935f-1d4b47df50ae
-
-(def default-data [
-                   {:customer/id #uuid"902d739c-1226-4485-a109-2678c6c7a58f", :customer/name "Angelo", :customer/email "angelo@email.com"}
-                   {:customer/id #uuid"63c03785-9b0f-46b8-be86-8a072a99439f", :customer/name "Maria", :customer/email "maria@email.com"}
-                   {:customer/id #uuid"3659e5b1-34ac-498a-a899-6eef06d441f7", :customer/name "Jose", :customer/email "jose@email.com"}
-                   {:customer/id #uuid"f8ed5740-99d3-4e6b-a71e-aa2b9158bcd9", :customer/name "Marta", :customer/email "marta@email.com"}
-                   {:customer/id #uuid"e42dca1e-69db-45bb-88d5-5225a49ebed0", :customer/name "Hellen", :customer/email "hellen@email.com"}
-                   {:customer/id #uuid"d3996403-e4c3-46e9-935f-1d4b47df50ae", :customer/name "Erika", :customer/email "erika@email.com"}
-                   ])
-
-(defn init-entity!
-  "starts the data to test the movements"
-  [db-conn]
-  ; TODO: This is something to think about, how to share a certain important component with other parts of the application?
-  (alter-var-root #'conn (constantly db-conn))
-  @(d/transact conn schema)
-  @(d/transact conn default-data))
+(defn add-data!
+  [data]
+  @(d/transact conn data))
 
 (defn get-all-customers
   "returns the whole list of customers"
@@ -72,3 +47,10 @@
               (not [_ :order/customer ?customer])]
             (d/db conn))
        (map first)))
+
+(defn init-entity!
+  "starts the data to test the movements"
+  [db-conn]
+  ; TODO: This is something to think about, how to share a certain important component with other parts of the application?
+  (alter-var-root #'conn (constantly db-conn))
+  @(d/transact conn schema))
