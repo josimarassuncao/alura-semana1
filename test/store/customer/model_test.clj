@@ -16,8 +16,13 @@
     (let [name "José da Silva"
           email "jose.silva@email.com"
           customer (build-new-customer name email)]
-      (println customer)
       (is (= java.util.UUID (class (:customer/id customer))))
       (is (= name (:customer/name customer)))
-      (is (= email (:customer/email customer))))))
+      (is (= email (:customer/email customer)))))
 
+  (testing "fails to get a new instance of customer data due to invalid parameters"
+    (let [name nil
+          email nil]
+      (is (thrown? java.lang.AssertionError (build-new-customer name email)))
+      ))
+  )

@@ -16,6 +16,7 @@
   "builds a new customer data"
   ([name :- s/Str email :- s/Str] (build-new-customer (uuid) name email))
   ([uuid :- s/Uuid name :- s/Str email :- s/Str]
+   {:pre [(not (nil? name)), (not (nil? email))]}
    {:customer/id    uuid,
     :customer/name  name,
     :customer/email email}))
