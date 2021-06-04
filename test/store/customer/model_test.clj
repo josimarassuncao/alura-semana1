@@ -1,7 +1,8 @@
 (ns store.customer.model_test
   (:require [clojure.test :refer :all]
             [store.customer.model :refer :all]
-            [schema.core :as s])
+            [schema.core :as s]
+            [clojure.test.check.generators :as gen])
   (:use clojure.pprint))
 
 (s/set-fn-validation! true)
@@ -32,6 +33,7 @@
             false
             (catch clojure.lang.ExceptionInfo e
               (= :schema.core/error (:type (ex-data e)))
-              ))))
-    )
+              )))))
 )
+
+(deftest )

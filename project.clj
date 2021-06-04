@@ -6,5 +6,6 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [com.datomic/datomic-pro "1.0.6269"]
                  [org.apache.kafka/kafka-clients "2.7.0"]
-                 [prismatic/schema "1.1.12"]]
+                 [prismatic/schema "1.1.12"]
+                 [org.clojure/test.check "1.1.0"]]
   :repl-options {:init-ns store.core})

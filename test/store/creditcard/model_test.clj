@@ -5,6 +5,11 @@
 
 (s/set-fn-validation! true)
 
+;(defn- gets-a-random-cardnumber!
+;  []
+;  (reduce conj [] (flatten (gen/sample (gen/tuple (gen/choose 10 9999)) 4)))
+;  )
+
 (deftest build-new-creditcard-test
   (testing "gets a new instance of creditcard data passing all parameters"
     (let [id #uuid"cd335e7b-9d79-4ffb-84e3-05cd8514ba20"
@@ -42,4 +47,5 @@
             (catch clojure.lang.ExceptionInfo e
               (= :schema.core/error (:type (ex-data e)))
               )))))
+
   )
