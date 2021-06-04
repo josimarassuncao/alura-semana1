@@ -1,6 +1,10 @@
 (ns store.customer.model_test
   (:require [clojure.test :refer :all]
-            [store.customer.model :refer :all]))
+            [store.customer.model :refer :all]
+            [schema.core :as s])
+  (:use clojure.pprint))
+
+(s/set-fn-validation! true)
 
 (deftest build-new-customer-test
   (testing "gets a new instance of customer data passing 3 parameters"
@@ -23,6 +27,11 @@
   (testing "fails to get a new instance of customer data due to invalid parameters"
     (let [name nil
           email nil]
-      (is (thrown? java.lang.AssertionError (build-new-customer name email)))
-      ))
-  )
+      (is (try
+            (build-new-customer name email)
+            false
+            (catch clojure.lang.ExceptionInfo e
+              (= :schema.core/error (:type (ex-data e)))
+              ))))
+    )
+)

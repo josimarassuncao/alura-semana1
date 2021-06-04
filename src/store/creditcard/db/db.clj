@@ -28,10 +28,6 @@
               :db/doc         "The limit defined for the credit card"}
              ])
 
-(defn uuid
-  []
-  (java.util.UUID/randomUUID))
-
 ;; Previous card :number - current card number
 ;; 1534 112 2026-02 - [5148 7572 5686 0922] 200 2023-04-20
 ;; 1637 210 2029-03 - [5427 1395 4814 2967] 888 2022-12-20
