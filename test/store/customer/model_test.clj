@@ -2,7 +2,9 @@
   (:require [clojure.test :refer :all]
             [store.customer.model :refer :all]
             [schema.core :as s]
-            [clojure.test.check.generators :as gen])
+            [clojure.test.check.generators :as gen]
+            [clojure.test.check.properties :as prop]
+            [clojure.test.check.clojure-test :refer [defspec]])
   (:use clojure.pprint))
 
 (s/set-fn-validation! true)
@@ -34,6 +36,18 @@
             (catch clojure.lang.ExceptionInfo e
               (= :schema.core/error (:type (ex-data e)))
               )))))
-)
+  )
 
-(deftest )
+(defn- roundtrip
+  [customer]
+  (-> customer
+      customer->str
+      str->customer))
+
+(defspec serialization-deserealization-test 50
+         (prop/for-all [id gen/uuid
+                        name (gen/not-empty gen/string-alphanumeric)
+                        email (gen/not-empty gen/string-alphanumeric)]
+                       (let [customer (build-new-customer id name email)]
+                         (= customer (roundtrip customer))))
+         )
