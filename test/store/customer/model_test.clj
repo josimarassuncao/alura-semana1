@@ -49,5 +49,6 @@
                         name (gen/not-empty gen/string-alphanumeric)
                         email (gen/not-empty gen/string-alphanumeric)]
                        (let [customer (build-new-customer id name email)]
+                         ;(println customer)
                          (= customer (roundtrip customer))))
          )

@@ -1,14 +1,12 @@
 (ns store.creditcard.model-test
   (:require [clojure.test :refer :all]
             [store.creditcard.model :refer :all]
-            [schema.core :as s]))
+            [schema.core :as s]
+            [clojure.test.check.generators :as gen]
+            [clojure.test.check.properties :as prop]
+            [clojure.test.check.clojure-test :refer [defspec]]))
 
 (s/set-fn-validation! true)
-
-;(defn- gets-a-random-cardnumber!
-;  []
-;  (reduce conj [] (flatten (gen/sample (gen/tuple (gen/choose 10 9999)) 4)))
-;  )
 
 (deftest build-new-creditcard-test
   (testing "gets a new instance of creditcard data passing all parameters"
@@ -49,3 +47,31 @@
               )))))
 
   )
+
+(defn- roundtrip
+  [creditcard]
+  (-> creditcard
+      creditcard->str
+      str->creditcard))
+
+(defn- cardnumber-gen
+  []
+   (gen/tuple (gen/choose 10 9999)
+              (gen/choose 10 9999)
+              (gen/choose 10 9999)
+              (gen/choose 10 9999)))
+
+(defn- limit-gen
+  []
+  (gen/double* {:infinite? false :NaN? false :min 0.0 :max 60000.0}))
+
+(defspec serialization-deserealization-test 250
+         (prop/for-all [id gen/uuid
+                        cardnumber (cardnumber-gen)
+                        cvv (gen/choose 10 999)
+                        expiration (gen/not-empty gen/string-alphanumeric)
+                        limit (limit-gen)]
+                       (let [card (build-new-creditcard id cardnumber cvv expiration limit)]
+                         ;(println card)
+                         (= card (roundtrip card))))
+         )
